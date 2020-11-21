@@ -30,6 +30,13 @@ jobs:
     - id: set_build_date
       name: Set build date
       run: echo "::set-output name=build_date::$(date -u +"%Y-%m-%dT%H:%M:%SZ")"
+    - name: Compile
+      env:
+        GOOS: linux
+        GOARCH: ${{ matrix.arch }}
+        CGO_ENABLED: '0'
+        GO111MODULE: 'on'
+      run: go build -v -a -tags netgo -o release/linux/${{ matrix.arch }}/drone-github-release
     - name: Build and push
       uses: docker/build-push-action@v2
       with:
