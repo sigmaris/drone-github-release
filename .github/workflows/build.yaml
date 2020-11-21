@@ -36,7 +36,7 @@ jobs:
         GOARCH: ${{ matrix.arch }}
         CGO_ENABLED: '0'
         GO111MODULE: 'on'
-      run: go build -v -a -tags netgo -o release/linux/${{ matrix.arch }}/drone-github-release
+      run: go build -v -ldflags "-X main.version=${{ github.sha }}" -a -tags netgo -o release/linux/${{ matrix.arch }}/drone-github-release ./cmd/drone-github-release
     - name: Build and push
       uses: docker/build-push-action@v2
       with:
